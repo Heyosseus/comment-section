@@ -8,10 +8,10 @@ import { GlobalStyles } from './styles/GlobalStyles';
 import Contents from './components/Contents';
 
 
+import data from './data.json'
 
 const App: React.FC = () => {
   
-
   
   return (
     <div>
@@ -23,7 +23,7 @@ const App: React.FC = () => {
         ></link>
       </Helmet>
       <Container>
-        <Contents  />
+        <Contents comments={data.comments} />
       </Container>
     </div>
   );

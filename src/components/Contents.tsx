@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 import firstAvatar from '../assets/avatars/image-amyrobson.png';
 import secondAvatar from '../assets/avatars/image-maxblagun.png';
 import plus from '../assets/icons/icon-plus.svg';
@@ -64,40 +64,35 @@ import data from '../data.json';
 const ID = Math.random() * 1000;
 
 interface Props {
-  initialValue: number;
+  comments: any;
 }
 
-function Contents<Props>({ initialValue }: any) {
+export const Contents: React.FC<Props> = ({ comments }) => {
   const [items, setItems] = useState<Items[]>();
-  const [score, setScore] = useState(12);
-  const [score2, setScore2] = useState(5);
+  const [score, setScore] = useState();
+
+  console.log(comments.score);
 
   const Increment = () => {
     setScore(score + 1);
   };
+
   const Decrement = () => {
     setScore(score - 1);
   };
 
-  useEffect(() => {
-    if (Array.isArray(data)) {
-      setItems(data);
-    } else {
-      setItems([data]);
-    }
-  }, []);
   return (
     <div>
       <div>
-        {items &&
-          items.map((item) => (
-            <Card key={ID}>
+        {comments &&
+          comments.map((comment: any) => (
+            <Card key={comment.id}>
               <Header>
-                <Images src={firstAvatar}></Images>
-                <Username>{item.comments[0].user.username}</Username>
-                <CreatedAt>{item.comments[0].createdAt}</CreatedAt>
+                <Images src={comment.user.image.png}></Images>
+                <Username>{comment.user.username}</Username>
+                <CreatedAt>{comment.createdAt}</CreatedAt>
               </Header>
-              <Comments>{item.comments[0].content}</Comments>
+              <Comments>{comment.content}</Comments>
               <Footer>
                 <VotingComp>
                   <PlusIcon
@@ -105,7 +100,7 @@ function Contents<Props>({ initialValue }: any) {
                     alt=""
                     onClick={Increment}
                   ></PlusIcon>
-                  <Score>{score}</Score>
+                  <Score>{comment.score}</Score>
                   <MinusIcon
                     src={minus}
                     alt=""
@@ -122,6 +117,6 @@ function Contents<Props>({ initialValue }: any) {
       </div>
     </div>
   );
-}
+};
 
 export default Contents;
