@@ -59,17 +59,16 @@ type Items = {
     }[];
   }[];
 };
-import data from '../data.json';
 
-const ID = Math.random() * 1000;
+
+
 
 interface Props {
   comments: any;
 }
 
-export const Contents: React.FC<Props> = ({ comments }) => {
-  const [items, setItems] = useState<Items[]>();
-  const [score, setScore] = useState();
+const Contents: React.FC<Props> = ({ comments }) => {
+  const [score, setScore] = useState(0);
 
   console.log(comments.score);
 
