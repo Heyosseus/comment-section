@@ -4,20 +4,29 @@ import styled from "styled-components";
 export const Card = styled.div`
   width: 92vw;
   background: #fff;
-  height: 256px;
+  height: auto;
   border-radius: 8px;
   padding: 16px;
   margin-top: 16px;
+`;
+export const CardForComments = styled.div`
+  width: 86vw;
+  background: #fff;
+  height: auto;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0 0 16px;
 `;
 export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 243px;
+  width: 263px;
 `;
 export const Images = styled.img`
   width: 32px;
   height: 32px;
+  src: ${(props) => props.src};
 `;
 
 export const Username = styled.h3`

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Footer = styled.div`
   display: flex;
@@ -14,6 +14,9 @@ export const VotingComp = styled.div`
   background: #f5f6fa;
   border-radius: 10px;
   margin-top: 16px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const PlusIcon = styled.img`
@@ -30,6 +33,14 @@ export const ReplyIcon = styled.img`
   width: 14px;
   height: 12.2px;
 `;
+export const EditIcon = styled.img`
+  width: 14px;
+  height: 14px;
+`;
+export const DeleteIcon = styled.img`
+  width: 12px;
+  height: 14px;
+`;
 
 export const Score = styled.div`
   color: #5357b6;
@@ -38,12 +49,15 @@ export const Score = styled.div`
 `;
 
 export const Reply = styled.div`
-  width: 70px;
   color: #5357b6;
   font-weight: 500;
   line-height: 24px;
   display: flex;
-  justify-content: space-between;
+  gap: 4px;
   align-items: center;
   margin-top: 16px;
+  justify-content: space-between;
+  &:hover {
+    cursor: pointer;
+  }
 `;
