@@ -10,6 +10,26 @@ import data from './data.json';
 import CommentSection from './components/CommentSection';
 
 const App: React.FC = () => {
+  const [selectedComment, setSelectedComment] = useState(null);
+  const [display, setDisplay] = useState(false);
+  const [score, setScore] = useState(0);
+
+  const Increment = () => {
+    setScore(score + 1);
+  };
+
+  const Decrement = () => {
+    setScore(score - 1);
+  };
+  const handleClick = (id: any) => {
+    if (selectedComment === id && display === true) {
+      setSelectedComment(null);
+      setDisplay(false);
+    } else {
+      setSelectedComment(id);
+      setDisplay(true);
+    }
+  };
   return (
     <div>
       <GlobalStyles />
@@ -20,8 +40,22 @@ const App: React.FC = () => {
         ></link>
       </Helmet>
       <Container>
-        <Contents comments={data.comments} />
-        <CommentSection props={data.comments[1].replies}/>
+        <Contents
+          comments={data.comments}
+          handleClick={handleClick}
+          selectedComment={selectedComment}
+          display={display}
+          increment={Increment}
+          decrement={Decrement}
+        />
+        <CommentSection
+          props={data.comments[1].replies}
+          handleClick={handleClick}
+          selectedComment={selectedComment}
+          display={display}
+          increment={Increment}
+          decrement={Decrement}
+        />
       </Container>
     </div>
   );
