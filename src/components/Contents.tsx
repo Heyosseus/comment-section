@@ -22,96 +22,64 @@ import {
   Score,
   VotingComp,
 } from '../styles/Footer';
+import AddComment from './AddComment';
 
-type Items = {
-  currentUser: {
-    image: {
-      png: string;
-      webp: string;
-    };
-    username: string;
-  };
-  comments: {
-    id: number;
-    content: string;
-    createdAt: string;
-    score: number;
-    user: {
-      image: {
-        png: string;
-        webp: string;
-      };
-      username: string;
-    };
-    replies: {
-      id: number;
-      content: string;
-      createdAt: string;
-      score: number;
-      replyingTo: string;
-      user: {
-        image: {
-          png: string;
-          webp: string;
-        };
-        username: string;
-      };
-    }[];
-  }[];
-};
-
-
-
+import data from '../data.json';
 
 interface Props {
   comments: any;
+  handleClick: any;
+  display: any;
+  selectedComment: any;
+  increment: any;
+  decrement: any;
 }
 
-const Contents: React.FC<Props> = ({ comments }) => {
-  const [score, setScore] = useState(0);
-
-  console.log(comments.score);
-
-  const Increment = () => {
-    setScore(score + 1);
-  };
-
-  const Decrement = () => {
-    setScore(score - 1);
-  };
-
+const Contents: React.FC<Props> = ({
+  comments,
+  handleClick,
+  display,
+  selectedComment,
+  increment,
+  decrement,
+}) => {
   return (
     <div>
       <div>
         {comments &&
           comments.map((comment: any) => (
-            <Card key={comment.id}>
-              <Header>
-                <Images src={comment.user.image.png}></Images>
-                <Username>{comment.user.username}</Username>
-                <CreatedAt>{comment.createdAt}</CreatedAt>
-              </Header>
-              <Comments>{comment.content}</Comments>
-              <Footer>
-                <VotingComp>
-                  <PlusIcon
-                    src={plus}
-                    alt=""
-                    onClick={Increment}
-                  ></PlusIcon>
-                  <Score>{comment.score}</Score>
-                  <MinusIcon
-                    src={minus}
-                    alt=""
-                    onClick={Decrement}
-                  ></MinusIcon>
-                </VotingComp>
-                <Reply>
-                  <ReplyIcon src={reply}></ReplyIcon>
-                  Replay
-                </Reply>
-              </Footer>
-            </Card>
+            <div key={comment.id}>
+              <Card>
+                <Header>
+                  <Images src={comment.user.image.png}></Images>
+                  <Username>{comment.user.username}</Username>
+                  <CreatedAt>{comment.createdAt}</CreatedAt>
+                </Header>
+                <Comments>{comment.content}</Comments>
+                <Footer>
+                  <VotingComp>
+                    <PlusIcon
+                      src={plus}
+                      alt=""
+                      onClick={increment}
+                    ></PlusIcon>
+                    <Score>{comment.score}</Score>
+                    <MinusIcon
+                      src={minus}
+                      alt=""
+                      onClick={decrement}
+                    ></MinusIcon>
+                  </VotingComp>
+                  <Reply onClick={() => handleClick(comment.id)}>
+                    <ReplyIcon src={reply}></ReplyIcon>
+                    Replay
+                  </Reply>
+                </Footer>
+              </Card>
+              {selectedComment === comment.id && display ? (
+                <AddComment />
+              ) : null}
+            </div>
           ))}
       </div>
     </div>
