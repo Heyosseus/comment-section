@@ -27,83 +27,145 @@ import {
 
 interface Props {
   props: any;
+  handleClick: any;
+  display: any;
+  selectedComment: any;
+  increment: any;
+  decrement: any;
 }
 
 import data from '../data.json';
 
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import AddComment, { SendButton } from './AddComment';
 
-const CommentSection: React.FC<Props> = ({ props }) => {
-  
+const CommentSection: React.FC<Props> = ({
+  props,
+  handleClick,
+  display,
+  selectedComment,
+  increment,
+  decrement,
+}) => {
+  const [isEditable, setIsEditable] = useState(false);
+  const [commentContainer, setCommentContainer] = useState(
+    data.comments[1].content
+  );
+  const toggleEdit = () => {
+    setIsEditable(!isEditable);
+  };
+
   return (
     <div>
       <div>
         {props &&
           props.map((comment: any) => (
-            <div style={{ display: 'flex' }} key={comment.id}>
-              <Line>{comment.Line}</Line>
-              <CardForComments key={comment.id}>
-                <Header>
-                  <Images src={comment.user.image.png}></Images>
-                  <Username>{comment.user.username}</Username>
-                  {comment.user.username === 'ramsesmiron' ? (
-                    ''
-                  ) : (
-                    <Badge>you</Badge>
-                  )}
-                  <CreatedAt>{comment.createdAt}</CreatedAt>
-                </Header>
-                <Comments>{comment.content}</Comments>
-                <Footer>
-                  <VotingComp>
-                    <PlusIcon
-                      src={plus}
-                      alt=""
-                      // onClick={Increment}
-                    ></PlusIcon>
-                    <Score>{comment.score}</Score>
-                    <MinusIcon
-                      src={minus}
-                      alt=""
-                      // onClick={Decrement}
-                    ></MinusIcon>
-                  </VotingComp>
-                  <Reply>
-                    {comment.user.username === 'ramsesmiron' ? (
-                      <ReplyIcon src={reply}></ReplyIcon>
-                    ) : (
-                      <DeleteIcon src={deleteIcon}></DeleteIcon>
-                    )}
-                    {comment.user.username === 'ramsesmiron' ? (
-                      'Replay'
-                    ) : (
-                      <span style={{ color: '#ED6368' }}>Delete</span>
-                    )}
-
+            <div>
+              <div style={{ display: 'flex' }} key={comment.id}>
+                <Line>{comment.Line}</Line>
+                <CardForComments key={comment.id}>
+                  <Header>
+                    <Images src={comment.user.image.png}></Images>
+                    <Username>{comment.user.username}</Username>
                     {comment.user.username === 'ramsesmiron' ? (
                       ''
                     ) : (
-                      <EditIcon src={edit}></EditIcon>
+                      <Badge>you</Badge>
                     )}
+                    <CreatedAt>{comment.createdAt}</CreatedAt>
+                  </Header>
+                  <Comments>
+                    {comment.user.username === 'ramsesmiron' ? (
+                      <Comments>
+                        <ReplayingTo>
+                          @{comment.replyingTo}
+                        </ReplayingTo>
+                        {comment.content}
+                      </Comments>
+                    ) : (
+                      <div>
+                        <Comments style={{ display: 'flex' }}>
+                          {isEditable ? (
+                            <EditContent
+                              value={commentContainer}
+                              onChange={(e) =>
+                                setCommentContainer(e.target.value)
+                              }
+                            />
+                          ) : (
+                            <div>
+                              <ReplayingTo>
+                                @{comment.replyingTo}
+                              </ReplayingTo>
+                              {comment.content}
+                            </div>
+                          )}
+                        </Comments>
+                        <ButtonDirection>
+                          {isEditable ? (
+                            <SendButton>update</SendButton>
+                          ) : (
+                            ''
+                          )}
+                        </ButtonDirection>
+                      </div>
+                    )}
+                  </Comments>
+                  <Footer>
+                    <VotingComp>
+                      <PlusIcon
+                        src={plus}
+                        alt=""
+                        // onClick={Increment}
+                      ></PlusIcon>
+                      <Score>{comment.score}</Score>
+                      <MinusIcon
+                        src={minus}
+                        alt=""
+                        // onClick={Decrement}
+                      ></MinusIcon>
+                    </VotingComp>
 
-                    {comment.user.username === 'ramsesmiron'
-                      ? ''
-                      : 'Edit'}
-                  </Reply>
-                </Footer>
-              </CardForComments>
+                    <Reply onClick={() => handleClick(comment.id)}>
+                      {comment.user.username === 'ramsesmiron' ? (
+                        <ReplyIcon src={reply}></ReplyIcon>
+                      ) : (
+                        <DeleteIcon src={deleteIcon}></DeleteIcon>
+                      )}
+                      {comment.user.username === 'ramsesmiron' ? (
+                        'Replay'
+                      ) : (
+                        <span style={{ color: '#ED6368' }}>
+                          Delete
+                        </span>
+                      )}
+
+                      {comment.user.username === 'ramsesmiron' ? (
+                        ''
+                      ) : (
+                        <EditIcon
+                          src={edit}
+                          onClick={toggleEdit}
+                        ></EditIcon>
+                      )}
+
+                      {comment.user.username === 'ramsesmiron'
+                        ? ''
+                        : 'Edit'}
+                    </Reply>
+                  </Footer>
+                </CardForComments>
+              </div>
+              {selectedComment === comment.id &&
+              display &&
+              comment.user.username === 'ramsesmiron' ? (
+                <AddComment />
+              ) : null}
             </div>
           ))}
       </div>
-      <Card>
-        <AddComment placeholder="Add a comment..."></AddComment>
-        <FooterItems>
-          <Images src={data.currentUser.image.png}></Images>
-          <SendButton>send</SendButton>
-        </FooterItems>
-        
-      </Card>
+      <AddComment />
     </div>
   );
 };
@@ -130,44 +192,30 @@ const Badge = styled.div`
   justify-content: center;
 `;
 
-const AddComment = styled.textarea`
-  width: 311px;
-  height: 96px;
-  border-radius: 8px;
-  border: 1px solid #e9ebf0;
-  padding: 12px;
-  outline: none;
-  resize: none;
-  &::placeholder {
-    font-weight: 400;
-    color: #67727e;
-  }
+const ReplayingTo = styled.span`
+  color: #5357b6;
+  font-weight: 500;
+  margin-right: 6px;
 `;
 
-const FooterItems = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-top: 16px;
-`
-
-const SendButton = styled.button`
-  width: 104px;
-  height: 48px;
-  border-radius: 8px;
-  background: #5357b6;
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: 500;
-  line-height: 24px;
-  border: none;
+const EditContent = styled.textarea`
+  width: 80vw;
+  height: 122px;
   outline: none;
+  padding: 8px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #67727e;
+  margin-top: 16px;
+  overflow-wrap: break-word;
+  border-radius: 5px;
+  border: 1px solid #5357b6;
+  resize: none;
+`;
+
+const ButtonDirection = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  &:hover {
-    transition: all .3s ease;
-    background: #c5c6ef;
-    cursor: pointer;
-  }
+  justify-content: flex-end;
+  margin-top: 8px;
 `;
