@@ -56,8 +56,24 @@ const CommentSection: React.FC<Props> = ({
     setIsEditable(!isEditable);
   };
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setCommentContainer(e.target.value);
+  };
+
+  const handleUpdate = () =>{
+    data.comments.forEach((comment) => {
+      if (comment.id === selectedComment) {
+        comment.content = commentContainer;
+      }
+    });
+    // setIsEditable(!isEditable);
+    setCommentContainer(commentContainer);
+  }
+
   return (
-    <div>
+    <Wrapper>
       <div>
         {props &&
           props.map((comment: any) => (
@@ -89,9 +105,7 @@ const CommentSection: React.FC<Props> = ({
                           {isEditable ? (
                             <EditContent
                               value={commentContainer}
-                              onChange={(e) =>
-                                setCommentContainer(e.target.value)
-                              }
+                              onChange={handleChange}
                             />
                           ) : (
                             <div>
@@ -104,7 +118,9 @@ const CommentSection: React.FC<Props> = ({
                         </Comments>
                         <ButtonDirection>
                           {isEditable ? (
-                            <SendButton>update</SendButton>
+                            <SendButton onClick={handleUpdate}>
+                              update
+                            </SendButton>
                           ) : (
                             ''
                           )}
@@ -166,12 +182,20 @@ const CommentSection: React.FC<Props> = ({
           ))}
       </div>
       <AddComment />
-    </div>
+    </Wrapper>
   );
 };
 
 export default CommentSection;
 
+const Wrapper = styled.div`
+  @media (min-width: 1024px) {
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+    width: 880px;
+  }
+`;
 const Line = styled.div`
   width: 2px;
   height: auto;

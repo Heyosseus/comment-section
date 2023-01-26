@@ -70,6 +70,7 @@ const Contents: React.FC<Props> = ({
                       onClick={decrement}
                     ></MinusIcon>
                   </VotingComp>
+
                   <Reply onClick={() => handleClick(comment.id)}>
                     <ReplyIcon src={reply}></ReplyIcon>
                     Replay

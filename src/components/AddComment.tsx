@@ -1,25 +1,33 @@
-import React from 'react'
+import React from 'react';
 import styled from 'styled-components';
-import { Card, Images } from '../styles/Content';
+import { Card, Images, CardForComments } from '../styles/Content';
 import data from '../data.json';
 
-
-const AddComment: React.FC=()=> {
+const AddComment: React.FC = () => {
   return (
-    <div>
-      <CardForComment>
-        <Container placeholder="Add a comment..."></Container>
-        <FooterItems>
-          <Images src={data.currentUser.image.png}></Images>
-          <SendButton>send</SendButton>
-        </FooterItems>
-      </CardForComment>
-    </div>
+    <CardForAddComment>
+      <Container placeholder="Add a comment..."></Container>
+      <FooterItems>
+        <Images src={data.currentUser.image.png}></Images>
+        <SendButton>send</SendButton>
+      </FooterItems>
+    </CardForAddComment>
   );
-}
+};
 
-export default AddComment
+export default AddComment;
 
+const CardForAddComment = styled(CardForComments)`
+  /* @media (min-width: 678px) {
+    width: 90vw;
+  } */
+  @media (min-width: 1024px) {
+    justify-content: center;
+    align-items: center;
+    width: 880px;
+    margin: 24px 0 0 0;
+  }
+`;
 const Container = styled.textarea`
   width: 311px;
   height: 96px;
@@ -36,6 +44,13 @@ const Container = styled.textarea`
     cursor: pointer;
     border-color: #5357b6;
     transition: 0.4s all ease;
+  }
+  @media (min-width: 678px) {
+    width: 530px;
+  }
+  @media (min-width: 1024px) {
+    width: 630px;
+    margin: auto;
   }
 `;
 
@@ -65,12 +80,4 @@ export const SendButton = styled.button`
     background: #c5c6ef;
     cursor: pointer;
   }
-`;
-export const CardForComment = styled.div`
-  width: 92vw;
-  background: #fff;
-  height: auto;
-  border-radius: 8px;
-  padding: 16px;
-  margin-top: 16px;
 `;
