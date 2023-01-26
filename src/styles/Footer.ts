@@ -17,6 +17,11 @@ export const VotingComp = styled.div`
   &:hover {
     cursor: pointer;
   }
+  /* @media (min-width: 1024px){
+    display: grid;
+    height: 80px;
+    width: 30px;
+  } */
 `;
 
 export const PlusIcon = styled.img`
