@@ -32,6 +32,7 @@ interface Props {
   selectedComment: any;
   increment: any;
   decrement: any;
+
 }
 
 import data from '../data.json';
@@ -72,13 +73,16 @@ const CommentSection: React.FC<Props> = ({
     setCommentContainer(commentContainer);
   }
 
+  const addingComment = (text: string) => {
+    console.log(text)
+  }
   return (
     <Wrapper>
       <div>
         {props &&
           props.map((comment: any) => (
-            <div>
-              <div style={{ display: 'flex' }} key={comment.id}>
+            <div key={comment.id}>
+              <div style={{ display: 'flex' }}>
                 <Line>{comment.Line}</Line>
                 <CardForComments key={comment.id}>
                   <Header>
@@ -176,12 +180,12 @@ const CommentSection: React.FC<Props> = ({
               {selectedComment === comment.id &&
               display &&
               comment.user.username === 'ramsesmiron' ? (
-                <AddComment />
+                <AddComment handleSubmit={addingComment} />
               ) : null}
             </div>
           ))}
       </div>
-      <AddComment />
+      <AddComment handleSubmit={addingComment} />
     </Wrapper>
   );
 };

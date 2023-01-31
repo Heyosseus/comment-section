@@ -1,17 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Card, Images, CardForComments } from '../styles/Content';
+import { Card, Images, CardForComments, CardHeaderForm } from '../styles/Content';
 import data from '../data.json';
 
-const AddComment: React.FC = () => {
+
+interface Props {
+  handleSubmit: any;
+}
+const AddComment: React.FC<Props> = ({handleSubmit} : any) => {
+  const[text, setText] = useState("")
+  const isTextareaDisabled = text.length === 0;
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(text)
+    console.log(text)
+  }
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value)
+  }
   return (
-    <CardForAddComment>
-      <Container placeholder="Add a comment..."></Container>
+    <CardHeaderForm onSubmit={onSubmit}>
+      <Container
+        placeholder="Add a comment..."
+        value={text}
+        onChange={handleChange}
+      >
+        {' '}
+      </Container>
       <FooterItems>
         <Images src={data.currentUser.image.png}></Images>
-        <SendButton>send</SendButton>
+        <SendButton disabled={isTextareaDisabled}>send</SendButton>
       </FooterItems>
-    </CardForAddComment>
+    </CardHeaderForm>
   );
 };
 

@@ -43,6 +43,9 @@ const Contents: React.FC<Props> = ({
   increment,
   decrement,
 }) => {
+  const addingComment = (text: string) => {
+    console.log(text);
+  };
   return (
     <div>
       <div>
@@ -78,7 +81,7 @@ const Contents: React.FC<Props> = ({
                 </Footer>
               </Card>
               {selectedComment === comment.id && display ? (
-                <AddComment />
+                <AddComment handleSubmit={addingComment} />
               ) : null}
             </div>
           ))}
