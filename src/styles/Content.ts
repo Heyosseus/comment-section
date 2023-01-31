@@ -23,6 +23,20 @@ export const CardForComments = styled(Card)`
     width: 880px;
   }
 `;
+
+export const CardHeaderForm = styled.form`
+  width: 92vw;
+  background: #fff;
+  height: auto;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0 0 16px;
+  @media (min-width: 1024px) {
+    justify-content: center;
+    align-items: center;
+    width: 880px;
+  }
+`;
 export const Header = styled.div`
   display: flex;
   align-items: center;
